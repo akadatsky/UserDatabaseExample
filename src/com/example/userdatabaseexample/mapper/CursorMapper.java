@@ -19,7 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+
 public class CursorMapper<T> {
+
   final ObjectFactory<T> factory;
   Field[] fields;
   private Method[] postMapHooks;
@@ -59,16 +61,22 @@ public class CursorMapper<T> {
   }
 
   public static <T> CursorMapper<T> create(final Class<T> recordClass) {
+
     return new CursorMapper<T>(recordClass, new ObjectFactory<T>() {
       @Override
       public T newInstance() {
+        final UnsafeAllocator unsafeAllocator = UnsafeAllocator.create();
+        T instance;
         try {
-          return recordClass.newInstance();
-        } catch (IllegalAccessException e) {
-          throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-          throw new RuntimeException(e);
+          instance = recordClass.newInstance();
+        } catch (Exception e) {
+          try {
+            instance = unsafeAllocator.newInstance(recordClass);
+          } catch (Exception e1) {
+            throw new RuntimeException(e1);
+          }
         }
+        return instance;
       }
     });
   }
