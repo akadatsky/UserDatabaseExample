@@ -49,13 +49,8 @@ public class CursorMapper<T> {
       return;
     }
     for (Field field : recordClass.getDeclaredFields()) {
-      for (Annotation annotation : field.getDeclaredAnnotations()) {
-        if (annotation instanceof Column) {
-          field.setAccessible(true);
-          fields.add(field);
-          break;
-        }
-      }
+      field.setAccessible(true);
+      fields.add(field);
     }
     getFields(recordClass.getSuperclass(), fields);
   }
@@ -133,7 +128,11 @@ public class CursorMapper<T> {
     int[] result = new int[fields.length];
     for (int i = 0; i < fields.length; i++) {
       Field field = fields[i];
-      result[i] = cursor.getColumnIndex(field.getAnnotation(Column.class).value());
+      String columnName = field.getName();
+      if (field.getAnnotation(Column.class) != null) {
+        columnName = field.getAnnotation(Column.class).value();
+      }
+      result[i] = cursor.getColumnIndex(columnName);
     }
     return result;
   }
