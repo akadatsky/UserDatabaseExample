@@ -1,12 +1,14 @@
 package com.example.userdatabaseexample;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import com.example.userdatabaseexample.cp.CPActivity;
 import com.example.userdatabaseexample.models.Place;
 import com.example.userdatabaseexample.models.User;
 import com.example.userdatabaseexample.store.UserDatabase;
@@ -24,6 +26,15 @@ public class MainActivity extends Activity {
     setContentView(R.layout.main);
 
     userDatabase = UserDatabase.get(this);
+
+    Button openCp = (Button) findViewById(R.id.openCp);
+    openCp.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivity(new Intent(MainActivity.this, CPActivity.class));
+      }
+    });
+
     Button makeDb = (Button) findViewById(R.id.makeDb);
     makeDb.setOnClickListener(new View.OnClickListener() {
       @Override
