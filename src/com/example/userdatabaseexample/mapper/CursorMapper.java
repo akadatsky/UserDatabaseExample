@@ -2,10 +2,8 @@ package com.example.userdatabaseexample.mapper;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.text.TextUtils;
 import android.util.Log;
-import com.example.userdatabaseexample.util.Lists;
-import com.example.userdatabaseexample.util.Logs;
-import com.example.userdatabaseexample.util.Strings;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -31,7 +29,7 @@ public class CursorMapper<T> {
     List<Field> fields = new ArrayList<Field>();
     getFields(recordClass, fields);
     this.fields = fields.toArray(new Field[fields.size()]);
-    List<Method> postMapHooks = Lists.newArrayList();
+    List<Method> postMapHooks = new ArrayList<Method>();
     for (Method method : recordClass.getDeclaredMethods()) {
       for (Annotation annotation : method.getDeclaredAnnotations()) {
         if (annotation instanceof PostMap) {
@@ -119,7 +117,7 @@ public class CursorMapper<T> {
       cursor.close();
     } catch (SQLiteException e) {
       // Nothing to do.
-      Log.w(Logs.LOG_TAG, "Failed to close cursor", e);
+      Log.w("CursorMapper", "Failed to close cursor", e);
     }
   }
 
@@ -141,31 +139,31 @@ public class CursorMapper<T> {
     if (type == String.class) {
       return cursor.getString(columnIndex);
     } else if (type == int.class || type == Integer.class) {
-      if (Strings.isNullOrEmpty(cursor.getString(columnIndex))) {
+      if (TextUtils.isEmpty(cursor.getString(columnIndex))) {
         return 0;
       } else {
         return cursor.getInt(columnIndex);
       }
     } else if (type == long.class || type == Long.class) {
-      if (Strings.isNullOrEmpty(cursor.getString(columnIndex))) {
+      if (TextUtils.isEmpty(cursor.getString(columnIndex))) {
         return 0;
       } else {
         return cursor.getLong(columnIndex);
       }
     } else if (type == double.class || type == Double.class) {
-      if (Strings.isNullOrEmpty(cursor.getString(columnIndex))) {
+      if (TextUtils.isEmpty(cursor.getString(columnIndex))) {
         return 0;
       } else {
         return cursor.getDouble(columnIndex);
       }
     } else if (type == float.class || type == Float.class) {
-      if (Strings.isNullOrEmpty(cursor.getString(columnIndex))) {
+      if (TextUtils.isEmpty(cursor.getString(columnIndex))) {
         return 0;
       } else {
         return cursor.getFloat(columnIndex);
       }
     } else if (type == boolean.class || type == Boolean.class) {
-      if (Strings.isNullOrEmpty(cursor.getString(columnIndex))) {
+      if (TextUtils.isEmpty(cursor.getString(columnIndex))) {
         return false;
       } else {
         return cursor.getInt(columnIndex) != 0;
@@ -175,7 +173,7 @@ public class CursorMapper<T> {
       try {
         return Currency.getInstance(currencyCode);
       } catch (IllegalArgumentException e) {
-        Log.w(Logs.LOG_TAG, "No such currency: " + currencyCode);
+        Log.w("CursorMapper", "No such currency: " + currencyCode);
         return null;
       }
     } else if (type == TimeZone.class) {
@@ -186,12 +184,12 @@ public class CursorMapper<T> {
       try {
         return TimeZone.getTimeZone(tz);
       } catch (IllegalArgumentException e) {
-        Log.w(Logs.LOG_TAG, "No such timezone: " + tz);
+        Log.w("CursorMapper", "No such timezone: " + tz);
         return null;
       }
     } else if (type == Date.class) {
       String value = cursor.getString(columnIndex);
-      if (Strings.isNullOrEmpty(value)) {
+      if (TextUtils.isEmpty(value)) {
         return null;
       } else {
         // The data could be String or Numeric.

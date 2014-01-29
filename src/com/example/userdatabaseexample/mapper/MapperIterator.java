@@ -53,5 +53,5 @@ class MapperIterator<T> implements CloseableIterator<T> {
   public void close() throws IOException {
     cursor.close();
   }
-  
+
 }
