@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Base64;
-import com.example.userdatabaseexample.mapper.CursorMapper;
 import com.example.userdatabaseexample.models.Place;
 import com.example.userdatabaseexample.models.User;
+import com.mobindustry.cursormapper.CursorMapper;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

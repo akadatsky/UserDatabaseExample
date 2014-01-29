@@ -1,6 +1,7 @@
 package com.example.userdatabaseexample.models;
 
-import com.example.userdatabaseexample.mapper.Column;
+
+import com.mobindustry.cursormapper.Column;
 
 import java.util.Date;
 
@@ -8,15 +9,11 @@ public class User {
 
   @Column("_id")
   private String id;
-  @Column("name")
   private String name;
   @Column("second_name")
   private String secondName;
   @Column("created_at")
   private Date createdAt;
-
-  public User() {
-  }
 
   public User(String name, String secondName) {
     this.name = name;

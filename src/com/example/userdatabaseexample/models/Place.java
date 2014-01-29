@@ -1,18 +1,13 @@
 package com.example.userdatabaseexample.models;
 
-import com.example.userdatabaseexample.mapper.Column;
+import com.mobindustry.cursormapper.Column;
 
 public class Place {
 
   @Column("_id")
   private String id;
-  @Column("descriprion")
   private String descriprion;
-  @Column("score")
   private int score;
-
-  public Place() {
-  }
 
   public Place(String descriprion, int score) {
     this.descriprion = descriprion;
