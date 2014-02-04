@@ -185,7 +185,7 @@ public class MyContactsProvider extends ContentProvider {
     return null;
   }
 
-  private class DBHelper extends SQLiteOpenHelper {
+  public static class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
       super(context, DB_NAME, null, DB_VERSION);

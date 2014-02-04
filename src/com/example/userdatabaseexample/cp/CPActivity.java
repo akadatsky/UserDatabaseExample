@@ -19,6 +19,7 @@ public class CPActivity extends FragmentActivity {
 
   public final static Uri CONTACT_URI = Uri.parse("content://ru.startandroid.providers.AdressBook/contacts");
   public final static int CONTACT_LOADER_ID = 1;
+  public final static int MY_LOADER_ID = 2;
 
   final String CONTACT_NAME = "name";
   final String CONTACT_EMAIL = "email";
@@ -32,12 +33,18 @@ public class CPActivity extends FragmentActivity {
       if (id == CONTACT_LOADER_ID) {
         return new CursorLoader(getApplicationContext(), CONTACT_URI, null, null, null, null);
       }
+      if (id == MY_LOADER_ID) {
+        return new MyLoader(getApplicationContext());
+      }
       return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
       if (loader.getId() == CONTACT_LOADER_ID) {
+        adapter.swapCursor(data);
+      }
+      if (loader.getId() == MY_LOADER_ID) {
         adapter.swapCursor(data);
       }
     }
@@ -53,7 +60,9 @@ public class CPActivity extends FragmentActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.cp);
 
-    getSupportLoaderManager().initLoader(CONTACT_LOADER_ID, null, loaderCallbacks); // should be called in onCreate()
+    // should be called in onCreate()
+//    getSupportLoaderManager().initLoader(CONTACT_LOADER_ID, null, loaderCallbacks);
+    getSupportLoaderManager().initLoader(MY_LOADER_ID, null, loaderCallbacks);
 
     String from[] = {"name", "email"};
     int to[] = {android.R.id.text1, android.R.id.text2};
@@ -63,7 +72,8 @@ public class CPActivity extends FragmentActivity {
     ListView lvContact = (ListView) findViewById(R.id.lvContact);
     lvContact.setAdapter(adapter);
 
-    getSupportLoaderManager().getLoader(CONTACT_LOADER_ID).startLoading();
+//    getSupportLoaderManager().getLoader(CONTACT_LOADER_ID).startLoading();
+    getSupportLoaderManager().getLoader(MY_LOADER_ID).startLoading();
   }
 
   public void onClickInsert(View v) {
